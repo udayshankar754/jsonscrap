@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -14,7 +15,8 @@ import { NzTableModule } from 'ng-zorro-antd/table';
     CommonModule,
     NzFormModule,
     NzInputModule,
-    NzTableModule
+    NzTableModule,
+    RouterLink
   ],
   templateUrl: './dataviewdata.component.html',
   styleUrl: './dataviewdata.component.css'

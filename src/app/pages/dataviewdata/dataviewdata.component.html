@@ -2,7 +2,6 @@
 
 <button (click)="onSubmit()" class=" bg-blue-500 p-2 rounded-full">Submit</button>
 
-{{viewData | json}}
 
 
   <nz-table #basicTable [nzData]="viewData" *ngIf="viewData">
@@ -25,13 +24,19 @@
         <td>{{data.pcno}}</td>
         <td>{{data.candidate}}</td>
         <td>{{data.party}}</td>
-        <td>{{data.plogo}}</td>
+        <td>
+          <a [href]="data.plogo" target="_blank">View logo</a>
+
+        </td>
         <td>{{data.gender}}</td>
         <td>{{data.age}}</td>
         <td>{{data.education}}</td>
         <td>{{data.crimecases}}</td>
         <td>{{data.totalassets}}</td>
-        <td>{{data.photo}}</td>        
+        <td>
+          <a [href]="data.photo" target="_blank">View Photo</a>
+        </td>
+             
       </tr>
     </tbody>
 </nz-table>
