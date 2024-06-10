@@ -1,0 +1,19 @@
+
+<nz-table #basicTable [nzData]="tableData" nzShowPagination="false" nzBordered="true">
+    <thead>
+      <tr>
+        <th>Party</th>
+        <th>Lead</th>
+        <th>Won</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td >{{data.party}}</td>
+        <td>{{data.lead}}</td>
+        <td>{{data.won}}</td>
+        <td>{{data.total}}</td>
+      </tr>
+    </tbody>
+  </nz-table>

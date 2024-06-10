@@ -1,0 +1,37 @@
+<textarea rows="4" nz-input [(ngModel)]="inputValue"></textarea>
+
+<button (click)="onSubmit()" class=" bg-blue-500 p-2 rounded-full">Submit</button>
+
+{{viewData | json}}
+
+
+  <nz-table #basicTable [nzData]="viewData" *ngIf="viewData">
+    <thead>
+      <tr>
+        <th>Pc No</th>
+        <th>Candidate</th>
+        <th>Party</th>
+        <th>Party Logo</th>
+        <th>Gender</th>
+        <th>Age</th>
+        <th>Education</th>
+        <th>Criminal Cases</th>
+        <th>Total Assets</th>
+        <th>Photo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{data.pcno}}</td>
+        <td>{{data.candidate}}</td>
+        <td>{{data.party}}</td>
+        <td>{{data.plogo}}</td>
+        <td>{{data.gender}}</td>
+        <td>{{data.age}}</td>
+        <td>{{data.education}}</td>
+        <td>{{data.crimecases}}</td>
+        <td>{{data.totalassets}}</td>
+        <td>{{data.photo}}</td>        
+      </tr>
+    </tbody>
+</nz-table>
