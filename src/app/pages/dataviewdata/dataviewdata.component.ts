@@ -7,6 +7,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { DownloadService } from '../../services/download/download.service';
+import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class DataviewdataComponent {
   inputValue : any;
   viewData : any;
   constructor(
-    private downloadData : DownloadService
+    private downloadData : DownloadService,
+    private message : NzMessageService
   ){}
 
   async onSubmit() {
@@ -35,6 +37,7 @@ export class DataviewdataComponent {
       let testData = JSON.parse(this.inputValue);
       this.viewData = JSON.parse(testData);
       this.processViewDataInChunks(this.viewData);
+      this.inputValue = '';
     } catch (error) {
       console.error('Error processing data:', error);
     }
@@ -49,7 +52,7 @@ export class DataviewdataComponent {
 
    async  processViewDataInChunks(viewData : any) {
     const chunkSize = 10;
-    const delay = 30000; // 30 seconds in milliseconds
+    const delay = 5000; // 10 seconds in milliseconds
 
     for (let i = 0; i < viewData.length; i += chunkSize) {
         // Get the current chunk
@@ -66,6 +69,9 @@ export class DataviewdataComponent {
             await new Promise(resolve => setTimeout(resolve, delay));
         }
     }
+
+
+    this.message.success("file Downloaded Complete")
 }
 
 
