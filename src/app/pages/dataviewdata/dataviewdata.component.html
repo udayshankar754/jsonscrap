@@ -19,14 +19,17 @@
         <td>{{data.pcno}}</td>
         <td>{{data.candidate}}</td>
         <td>
-          <img [src]="data.plogo">
-        </td>
-        <td>
-          <img [src]="data.photo">
-        </td>
-        <td>
           <button (click)="download(data)" class="p-2 rounded-full bg-green-500 disabled:bg-cyan-500" [disabled]="data.disabled">Download</button>
         </td>
+        <td>
+          {{data.plogo}}
+          <!-- <img [src]="data.plogo"> -->
+        </td>
+        <td>
+          {{data.photo}}
+          <!-- <img [src]="data.photo"> -->
+        </td>
+       
              
       </tr>
     </tbody>
