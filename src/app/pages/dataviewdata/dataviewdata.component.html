@@ -9,32 +9,23 @@
       <tr>
         <th>Pc No</th>
         <th>Candidate</th>
-        <th>Party</th>
         <th>Party Logo</th>
-        <th>Gender</th>
-        <th>Age</th>
-        <th>Education</th>
-        <th>Criminal Cases</th>
-        <th>Total Assets</th>
         <th>Photo</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of basicTable.data">
         <td>{{data.pcno}}</td>
         <td>{{data.candidate}}</td>
-        <td>{{data.party}}</td>
         <td>
-          <a [href]="data.plogo" target="_blank">View logo</a>
-
+          <img [src]="data.plogo">
         </td>
-        <td>{{data.gender}}</td>
-        <td>{{data.age}}</td>
-        <td>{{data.education}}</td>
-        <td>{{data.crimecases}}</td>
-        <td>{{data.totalassets}}</td>
         <td>
-          <a [href]="data.photo" target="_blank">View Photo</a>
+          <img [src]="data.photo">
+        </td>
+        <td>
+          <button (click)="download(data)" class="p-2 rounded-full bg-green-500 disabled:bg-cyan-500" [disabled]="data.disabled">Download</button>
         </td>
              
       </tr>
