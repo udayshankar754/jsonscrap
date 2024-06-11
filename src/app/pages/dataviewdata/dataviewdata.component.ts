@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { DownloadService } from '../../services/download/download.service';
 
 
 @Component({
@@ -26,38 +27,50 @@ export class DataviewdataComponent {
   inputValue : any;
   viewData : any;
   constructor(
-    private http : HttpClient
+    private downloadData : DownloadService
   ){}
 
   async onSubmit() {
-    let testData = JSON.parse(this.inputValue);
-    this.viewData = JSON.parse(testData)
-   }
-
+    try {
+      let testData = JSON.parse(this.inputValue);
+      this.viewData = JSON.parse(testData);
+      this.processViewDataInChunks(this.viewData);
+    } catch (error) {
+      console.error('Error processing data:', error);
+    }
+  }
+  
    download(data : any) {
     data.disabled = true;
-    this.downloadImage(data.photo , this.generateFilename(data.candidate , data.photo));
-    this.downloadImage(data.plogo , this.extractFilenameFromUrl(data.plogo))
+    this.downloadData.downloadImage(data.photo , this.generateFilename(data.candidate , data.photo))
+    // this.downloadImage(data.photo , this.generateFilename(data.candidate , data.photo));
+    // this.downloadImage(data.plogo , this.extractFilenameFromUrl(data.plogo))
    }
 
+   async  processViewDataInChunks(viewData : any) {
+    const chunkSize = 10;
+    const delay = 30000; // 30 seconds in milliseconds
 
-async downloadImage(url: string, filename: string) {
-  try {
-      const blob = await this.http.get(url, { responseType: 'blob' }).toPromise();
-      if (blob) {
-          const objectUrl = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = objectUrl;
-          a.download = filename;
-          a.click();
-          URL.revokeObjectURL(objectUrl);
-      } else {
-          console.error('Blob is undefined');
-      }
-  } catch (error) {
-      console.error('Error downloading image:', error);
-  }
+    for (let i = 0; i < viewData.length; i += chunkSize) {
+        // Get the current chunk
+        const chunk = viewData.slice(i, i + chunkSize);
+        
+        // Process each element in the current chunk
+        for (const element of chunk) {
+            element.disabled = true;
+            await this.downloadData.downloadImage(element.photo, this.generateFilename(element.candidate, element.photo));
+        }
+
+        // If there are more chunks to process, wait for 30 seconds
+        if (i + chunkSize < viewData.length) {
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
 }
+
+
+
+
 
 
 generateFilename(candidate: string, photoUrl: string): string {
