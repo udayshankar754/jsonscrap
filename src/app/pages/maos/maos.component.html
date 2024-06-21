@@ -1,6 +1,6 @@
-<ejs-maps id='rn-container'>
+<ejs-maps id="rn-container" *ngIf="shapeData">
   <e-layers>
-  <e-layer  [shapeData]= 'shapeData' [shapeSettings] = 'shapeSettings' [dataLabelSettings] = 'dataLabelSettings' [tooltipSettings] ='tooltipSettings'></e-layer>
+    <e-layer [shapeData]='shapeData' [shapeSettings]='shapeSettings' [dataLabelSettings]='dataLabelSettings' [tooltipSettings]='tooltipSettings'></e-layer>
   </e-layers>
-  </ejs-maps>
-  <!-- export let india_map : object = -->
+</ejs-maps>
+

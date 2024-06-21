@@ -2,35 +2,35 @@
 
 <button (click)="onSubmit()" class=" bg-blue-500 p-2 rounded-full">Submit</button>
 
+<input type="file" (change)="onFileChange($event)" />
 
 
-  <nz-table #basicTable [nzData]="viewData" *ngIf="viewData">
+
+  <nz-table #basicTable [nzData]="viewData" *ngIf="viewData" nzShowPagination="false">
     <thead>
       <tr>
         <th>Pc No</th>
         <th>Candidate</th>
-        <th>Party Logo</th>
-        <th>Photo</th>
-        <th>Action</th>
+        <th>Party</th>
+        <th>Gender</th>
+        <th>Age</th>
+        <th>Education</th>
+        <th>Criminal Cases</th>
+        <th>Total Assets</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
+      <tr *ngFor="let data of viewData">
         <td>{{data.pcno}}</td>
         <td>{{data.candidate}}</td>
-        <td>
-          <button (click)="download(data)" class="p-2 rounded-full bg-green-500 disabled:bg-cyan-500" [disabled]="data.disabled">Download</button>
-        </td>
-        <td>
-          {{data.plogo}}
-          <!-- <img [src]="data.plogo"> -->
-        </td>
-        <td>
-          {{data.photo}}
-          <!-- <img [src]="data.photo"> -->
-        </td>
+        <td>{{data.party}}</td>
+        <td>{{data.gender}}</td>
+        <td>{{data.age}}</td>
+        <td>{{data.education}}</td>
+        <td>{{data.crimecases}}</td>
+        <td>{{data.totalassets}}</td>
+    </tr>
        
              
-      </tr>
     </tbody>
 </nz-table>

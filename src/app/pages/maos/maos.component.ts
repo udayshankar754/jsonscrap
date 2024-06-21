@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MapsModule } from '@syncfusion/ej2-angular-maps';
 import { MapsTooltipService, DataLabelService } from '@syncfusion/ej2-angular-maps'
 import { india_map } from './IndiaMaps';
+import { Maps, DataLabel, MapsTooltip } from '@syncfusion/ej2-angular-maps';
+import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
+
+Maps.Inject(DataLabel, MapsTooltip);
+
 
 @Component({
   selector: 'app-maos',
   standalone: true,
   imports: [
     MapsModule,
+    CommonModule,
+    HttpClientModule
   ],
   templateUrl: './maos.component.html',
   styleUrl: './maos.component.css'
@@ -114,23 +123,38 @@ public tooltipSettings?: object;
 public shapeData?: object;
 public shapeSettings?: object;
 public dataLabelSettings?: object;
+
+constructor(
+  private http : HttpClient
+) {}
+
+
 ngOnInit(): void {
-    this.shapeData = india_map;
-    this.shapeSettings = {
-        autofill: true
-    };
-    this.tooltipSettings = {
-        visible: true,
-        valuePath: 'name'
-    };
-    this.dataLabelSettings = {
-        visible: true,
-        smartLabelMode: 'Hide',
-        intersectionAction: 'Trim',
-        labelPath: 'name',
-        animationDuration: 2000
-    };
+  this.dataforLabel();
+  this.shapeSettings = {
+    autofill: true
+  };
+  this.tooltipSettings = {
+    visible: true,
+    valuePath: 'PC_NAME',
+  };
+  this.dataLabelSettings = {
+    visible: true,
+    labelPath: 'PC_NAME',
+    animationDuration: 2000
+  };
 }
+
+dataforLabel() {
+  this.http.get('../../../assets/GUJARAT_parliament.geojson').subscribe(data => {
+    this.shapeData = data
+  })
+
+}
+
+
+
+
 
 
 }

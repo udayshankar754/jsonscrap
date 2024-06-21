@@ -8,6 +8,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { DownloadService } from '../../services/download/download.service';
 import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
+import { ExcelService } from '../../services/excel/excel.service';
 
 
 @Component({
@@ -27,70 +28,70 @@ import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
 export class DataviewdataComponent {
   inputValue : any;
   viewData : any;
+  data: any;
+
+
   constructor(
     private downloadData : DownloadService,
-    private message : NzMessageService
+    private message : NzMessageService,
+    private excelService: ExcelService,
   ){}
 
-  async onSubmit() {
-    try {
-      let testData = JSON.parse(this.inputValue);
-      this.viewData = JSON.parse(testData);
-      this.processViewDataInChunks(this.viewData);
-      this.inputValue = '';
-    } catch (error) {
-      console.error('Error processing data:', error);
-    }
+  onSubmit() {
+    this.viewData = JSON.parse(this.inputValue);
+    this.viewData = JSON.parse(this.viewData);
+    this.inputValue = [];
+    
+
+    this.viewData.sort((a : any, b : any) => {
+     if (a.candidate < b.candidate) {
+         return -1;
+     }
+     if (a.candidate > b.candidate) {
+         return 1;
+     }
+     return 0;
+    });
+    this.toWriteData();
+
+
+ }
+
+ 
+ onFileChange(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    this.excelService.readExcelFile(file).then((data) => {
+      this.data = data.json;
+    }).catch((error) => {
+      console.error('Error reading Excel file:', error);
+    });
   }
-  
-   download(data : any) {
-    data.disabled = true;
-    this.downloadData.downloadImage(data.photo , this.generateFilename(data.candidate , data.photo))
-    // this.downloadImage(data.photo , this.generateFilename(data.candidate , data.photo));
-    // this.downloadImage(data.plogo , this.extractFilenameFromUrl(data.plogo))
-   }
+}
 
-   async  processViewDataInChunks(viewData : any) {
-    const chunkSize = 10;
-    const delay = 5000; // 10 seconds in milliseconds
-
-    for (let i = 0; i < viewData.length; i += chunkSize) {
-        // Get the current chunk
-        const chunk = viewData.slice(i, i + chunkSize);
-        
-        // Process each element in the current chunk
-        for (const element of chunk) {
-            element.disabled = true;
-            await this.downloadData.downloadImage(element.photo, this.generateFilename(element.candidate, element.photo));
-        }
-
-        // If there are more chunks to process, wait for 30 seconds
-        if (i + chunkSize < viewData.length) {
-            await new Promise(resolve => setTimeout(resolve, delay));
-        }
+toWriteData() {
+  if (this.viewData && this.data) {
+    for (let i = 0; i < this.viewData.length; i++) {
+      let rowData = this.viewData[i];
+      if (rowData) {
+          const row = this.data.find((item : any) => {
+            if(item[1] == rowData.stateid && item[4] == rowData.pcno && item[6].toLowerCase() == rowData.candidate.toLowerCase()) {
+              item[8] = rowData.gender;
+              item[9] = rowData.age;
+              item[10] = rowData.education;
+              item[11] = rowData.crimecases;
+              item[12] = rowData.totalassets;
+              return item
+            }
+          });        
+      }
     }
-
-
-    this.message.success("file Downloaded Complete")
+    this.excelService.writeExcelFile(this.data, 'updated_file.xlsx');
+  }
 }
 
 
 
 
 
-
-generateFilename(candidate: string, photoUrl: string): string {
-    const extension = this.getFileExtension(photoUrl);
-    const modifiedCandidateName = candidate.replace(/ /g, '_');
-    return `${modifiedCandidateName}.${extension}`;
-}
-
-extractFilenameFromUrl(url: string): string {
-    const parts = url.split('/');
-    return parts[parts.length - 1];
-}
-
-getFileExtension(url: string): string {
-    return url.split('.').pop() || '';
-}
 }
