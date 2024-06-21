@@ -29,6 +29,8 @@ export class DataviewdataComponent {
   inputValue : any;
   viewData : any;
   data: any;
+  stateId : any;
+  PcNoTpe : any;
 
 
   constructor(
@@ -38,21 +40,30 @@ export class DataviewdataComponent {
   ){}
 
   onSubmit() {
-    this.viewData = JSON.parse(this.inputValue);
-    this.viewData = JSON.parse(this.viewData);
+    // this.viewData = JSON.parse(this.inputValue);
+    // this.viewData = JSON.parse(this.viewData);
     this.inputValue = [];
     
 
-    this.viewData.sort((a : any, b : any) => {
-     if (a.candidate < b.candidate) {
-         return -1;
-     }
-     if (a.candidate > b.candidate) {
-         return 1;
-     }
-     return 0;
-    });
-    this.toWriteData();
+    // this.viewData.sort((a : any, b : any) => {
+    //  if (a.candidate < b.candidate) {
+    //      return -1;
+    //  }
+    //  if (a.candidate > b.candidate) {
+    //      return 1;
+    //  }
+    //  return 0;
+    // });
+    let reqOvj = {
+      stateId : this.stateId , 
+      pcNo : this.PcNoTpe
+    }
+    console.log(reqOvj);
+
+    this.excelService.dataFetcher(reqOvj).subscribe((data : any) => {
+      this.viewData = JSON.parse(data);
+
+    })
 
 
  }

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
 
@@ -6,7 +7,9 @@ import * as XLSX from 'xlsx';
 })
 export class ExcelService {
 
-  constructor() { }
+  constructor(
+    private http : HttpClient
+  ) { }
   public readExcelFile(file: File): Promise<any> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -37,5 +40,9 @@ export class ExcelService {
       SheetNames: ['data']
     };
     XLSX.writeFile(workbook, filename);
+  }
+
+  dataFetcher(data : any) {
+    return this.http.post(`http://localhost:8000/data`,data)
   }
 }

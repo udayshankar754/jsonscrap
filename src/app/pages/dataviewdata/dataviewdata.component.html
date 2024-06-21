@@ -1,4 +1,15 @@
-<textarea rows="4" nz-input [(ngModel)]="inputValue"></textarea>
+<!-- <textarea rows="4" nz-input [(ngModel)]="inputValue"></textarea> -->
+<!-- {"stateId" : 35 , "pcNo" : 1} -->
+ <label>State Id : </label>
+ <input type="number" placeholder="Enter " [(ngModel)]="stateId">
+ <br/>
+ <br/>
+
+ <label>Pc No</label>
+ <input type="number" placeholder="Enter " [(ngModel)]="PcNoTpe">
+ <br/>
+ <br/>
+
 
 <button (click)="onSubmit()" class=" bg-blue-500 p-2 rounded-full">Submit</button>
 
